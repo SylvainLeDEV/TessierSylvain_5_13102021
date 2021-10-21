@@ -14,8 +14,7 @@
 const sectionCards = document.getElementById("items");
 console.log(sectionCards)
 
-//URL------------------------
-let str = "./product.html?id=42"
+
 //---------------------------
 //Variable pour stocker les données des canapé.
 let kanapData = [];
@@ -27,6 +26,7 @@ const fetchDataKanap = async () => {
         //La méthode .json() => méthode qui s'auto-résout en renvoyant le Body de la requête.
         .then((res) => res.json())
         .then((data) => (kanapData = data))
+        .catch((err) => alert("Une erreur est survenue :" +" " + err + " "+ "Lancer l'API"))
 
     console.log(kanapData)
 }
