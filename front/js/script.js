@@ -28,7 +28,7 @@ const fetchDataKanap = async () => {
         .then((data) => (kanapData = data))
         .catch((err) => alert("Une erreur est survenue :" +" " + err + " "+ "Lancer l'API"))
 
-    console.log(kanapData)
+    console.log("Les datas de l'API : ", kanapData)
 }
 
 // Une fonction pour afficher les canapé dans les cards
