@@ -3,17 +3,12 @@ window.onload = function () {
     const product = document.querySelector("#cart__items")
 
 
-    //On récupère les information du localStorage
-    if (typeof localStorage !== 'undefined' && localStorage.getItem("dataPannier") !== null) {
-        dataPannier = JSON.parse(localStorage.getItem("dataPannier"));
-        console.log("data pannier : ", dataPannier)
-    } else {
-        console.log("err")
-    }
-
-
     const pannierDisplay = () => {
 
+        //On récupère les information du localStorage
+        if (typeof localStorage !== 'undefined' && localStorage.getItem("dataPannier") !== null) {
+            dataPannier = JSON.parse(localStorage.getItem("dataPannier"));
+            console.log("data pannier : ", dataPannier)
 
             product.innerHTML = dataPannier.map((pannier) =>
 
@@ -40,33 +35,34 @@ window.onload = function () {
 </article>
         `
             ).join(" ")
+            if (dataPannier.length !== 0) {
+                const functionDeleteItem = () => {
+                    const deleteItem = document.querySelectorAll('p.deleteItem')
+
+                    for (let i = 0; i < deleteItem.length; i++) {
+                        deleteItem[i].addEventListener('click', (e) => {
+                            const getId = e.path[4].getAttribute("data-id")
+                            const getColor = e.path[4].getAttribute("data-color")
+                            console.log(getId + getColor)
+
+                            if (getId === dataPannier[i]._id && getColor === dataPannier[i].color) {
+                                dataPannier.splice(i, 1)
+                                localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
+                                pannierDisplay();
+                            }
+                        })
+                    }
+                };
+                functionDeleteItem();
+            } else {
+                localStorage.clear();
+            }
+        }
     }
     pannierDisplay();
 
 // Retire l'objet de dataPannier grace a splice
-    const functionDeleteItem = () => {
-        const deleteItem = document.querySelectorAll('p.deleteItem')
-        console.log(deleteItem)
 
-
-        for (let i = 0; i < deleteItem.length; i++) {
-            deleteItem[i].addEventListener('click', (e) => {
-                const getId = e.path[4].getAttribute("data-id")
-                const getColor = e.path[4].getAttribute("data-color")
-                console.log(e)
-                console.log(getId + getColor)
-
-                if (getId === dataPannier[i]._id && getColor === dataPannier[i].color) {
-                    console.log("Test de i : ", i)
-                    dataPannier.splice(i, 1)
-                    localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
-                    pannierDisplay();
-                    functionDeleteItem();
-                }
-            })
-        }
-    };
-    functionDeleteItem();
 }
 
 
