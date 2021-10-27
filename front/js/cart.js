@@ -41,42 +41,59 @@ window.onload = function () {
     }
     pannierDisplay();
 
-    const functionDeleteItem = (e) => {
 
-        const getId = e.path[4].getAttribute("data-id")
-        const getColor = e.path[4].getAttribute("data-color")
-        console.log(e)
-        console.log(getId + getColor)
-        for (const x of dataPannier) {
-            if (getId === x._id && getColor === x.color) {
-                dataPannier.splice(x, 1)
-                localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
-                pannierDisplay();
-                functionAddEventListener()
-            }
-        }
-    }
-
-    const functionAddEventListener = () => {
+    const functionDeleteItem = () => {
         const deleteItem = document.querySelectorAll('p.deleteItem')
         console.log(deleteItem)
 
         for (let i = 0; i < deleteItem.length; i++) {
             deleteItem[i].addEventListener('click', (e) => {
-                functionDeleteItem(e);
+                const getId = e.path[4].getAttribute("data-id")
+                const getColor = e.path[4].getAttribute("data-color")
+                console.log(e)
+                console.log(getId + getColor)
+
+                if (getId === dataPannier[i]._id && getColor === dataPannier[i].color) {
+                    console.log("Test de i : ", i)
+                    dataPannier.splice(i, 1)
+                    localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
+                    pannierDisplay();
+                    functionDeleteItem();
+                }
             })
         }
-    }
-    functionAddEventListener();
+    };
+    functionDeleteItem();
 
-    //Fonction pour remove les canapé du local.storage + rechercher la page
-    function storageRemove(event) {
-        localStorage.removeItem("dataPannier");
-        window.location.reload();
-        console.log(event)
-    }
+
+    // const functionDeleteItem = (e) => {
+    //
+    //     const getId = e.path[4].getAttribute("data-id")
+    //     const getColor = e.path[4].getAttribute("data-color")
+    //     console.log(e)
+    //     console.log(getId + getColor)
+    //     for (const x of dataPannier) {
+    //         if (getId === x._id && getColor === x.color) {
+    //             console.log("Test de x : " , x)
+    //             dataPannier.splice(x, 1)
+    //             localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
+    //             pannierDisplay();
+    //             functionAddEventListener()
+    //         }
+    //     }
+    // }
+    //
+    // const functionAddEventListener = () => {
+    //     const deleteItem = document.querySelectorAll('p.deleteItem')
+    //     console.log(deleteItem)
+    //
+    //     for (let i = 0; i < deleteItem.length; i++) {
+    //         deleteItem[i].addEventListener('click', (e) => {
+    //             functionDeleteItem(e);
+    //         })
+    //     }
+    // }
 
 }
-
 
 
