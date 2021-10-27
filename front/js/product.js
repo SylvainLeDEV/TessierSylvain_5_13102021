@@ -28,6 +28,7 @@ const fetchDataProduct = async () => {
 
     console.log("Produit dans productData : ", productData);
 }
+
 //Afficher le produit--------------------------------
 const productDisplay = async () => {
 
@@ -52,29 +53,14 @@ productDisplay();
 //Quantité du produit
 let numberKanap;
 quantityProduct.addEventListener('change', (e) => {
-    numberKanap = e.target.value
-    console.log(numberKanap)
+    numberKanap = parseInt(e.target.value);
 })
-
-//Check le nombre de produit par le nom et la couleur ----------------
-// function checkSameProduct(tableauPannier, itemName, itemColors) {
-//     for (x of tableauPannier) {
-//         if (x.name == itemName && x.color == itemColors) {
-//             x.quantity++;
-//             return true;
-//         }
-//     }
-// }
 
 function addToCart() {
 
     addPanier.addEventListener('click', (e) => {
             e.preventDefault();
-        console.log(e)
-
             let tableauPannier = [];
-            console.log(tableauPannier)
-
             let colorsOptionProduct = document.querySelector("select").value;
             const kanap = {
                 img: productData.imageUrl,
@@ -83,15 +69,25 @@ function addToCart() {
                 color: colorsOptionProduct,
                 description: productData.description,
                 price: productData.price / 100,
-                quantity: numberKanap,
+                quantity: parseInt(numberKanap),
                 _id: id,
             }
-        console.log("numbre : ", numberKanap);
 
-            localStorage.clear()
             if (typeof localStorage != 'undefined' && localStorage.getItem("dataPannier") != null) {
-                console.log("test : ", localStorage.getItem("dataPannier"))
-                tableauPannier = JSON.parse(localStorage.getItem("dataPannier"))
+                tableauPannier = JSON.parse(localStorage.getItem("dataPannier"));
+                const findProduct = tableauPannier.find((product) =>
+                    kanap._id === product._id && kanap.color === product.color
+                )
+                console.log(findProduct)
+                if (findProduct){
+                    console.log("meme produit")
+                    findProduct.quantity = numberKanap;
+                    localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
+
+                } else {
+                    tableauPannier.push(kanap)
+                    localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
+                }
             } else {
                 tableauPannier.push(kanap)
                 localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
