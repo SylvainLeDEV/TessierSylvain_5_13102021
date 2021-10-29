@@ -19,7 +19,7 @@ window.onload = function () {
     </div>
     <div class="cart__item__content">
         <div class="cart__item__content__titlePrice">
-            <h2>${pannier.name}</h2>
+            <h2>${pannier.name} ${pannier.color}</h2>
             <p>${pannier.price} €</p>
         </div>
         <div class="cart__item__content__settings">
@@ -35,6 +35,7 @@ window.onload = function () {
 </article>
         `
             ).join(" ")
+            // Pour supprimer une article
             if (dataPannier.length !== 0) {
                 const functionDeleteItem = () => {
                     const deleteItem = document.querySelectorAll('p.deleteItem')
@@ -46,7 +47,7 @@ window.onload = function () {
                             console.log(getId + getColor)
 
                             if (getId === dataPannier[i]._id && getColor === dataPannier[i].color) {
-                                dataPannier.splice(i, 1)
+                                dataPannier.splice(i, 1)// Retire l'objet de dataPannier grace a splice
                                 localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
                                 pannierDisplay();
                             }
@@ -57,12 +58,58 @@ window.onload = function () {
             } else {
                 localStorage.clear();
             }
+
+
+            if (dataPannier.length !== 0) {
+                const functionPrixTotalPanier = () => {
+                    const totalPrice = document.querySelector("#totalPrice");
+                    const totalQuantity = document.querySelector("#totalQuantity")
+//Calcul du prix total dans le panier ---
+                    let prixTotalPanier = [];
+                    let quantityArticleTotal = [];
+                    console.log("Varriable prixTotalPanier : ", prixTotalPanier)
+                    console.log("Varriable quantityArticleTotal : ", quantityArticleTotal)
+
+//Prendre tous les prix qui se trouve dans le panier
+                    for (let t = 0; t < dataPannier.length; t++) {
+                        let priceArticleInPanier = dataPannier[t].price;
+                        let quantityDeUnArticle = dataPannier[t].quantity;
+
+                        let calculPriceUnArticle = priceArticleInPanier * quantityDeUnArticle
+
+                        //Je mes les prix et articles dans une variable "prixTotalPanier" et "quantityArticleTotal"
+                        prixTotalPanier.push(calculPriceUnArticle)
+                        quantityArticleTotal.push(quantityDeUnArticle)
+                    }
+                    //Additionner les prix qu'il y a dans la variable "Quantity Article Total" avec reduce.
+//La méthode reduce() applique une fonction qui est un « accumulateur » et qui traite chaque valeur d'une liste (de la gauche vers la droite) afin de la réduire à une seule valeur.
+                    const reducerForArticles = (previousValue, currentValue) => previousValue + currentValue;
+                    const articleTotal = quantityArticleTotal.reduce(reducerForArticles, 0)
+                    //Affichage résultat
+                    totalQuantity.textContent = articleTotal;
+                    console.log(articleTotal)
+
+//Additionner les prix qu'il y a dans la variable "PrixTotalPanier" avec reduce.
+                    const reducerForPrix = (previousValue, currentValue) => previousValue + currentValue;
+                    const prixTotal = prixTotalPanier.reduce(reducerForPrix, 0);
+                    //J'affiche le résultat du prix total
+                    totalPrice.textContent = prixTotal.toFixed(2);
+                    console.log(prixTotal)
+
+                }
+                    functionPrixTotalPanier();
+            } else {
+                document.querySelector("#cartAndFormContainer > h1").innerHTML =
+                    `
+                   <h1>Panier vide</h1>
+                 
+                    `
+                totalPrice.textContent = 0;
+                totalQuantity.textContent = 0;
+            }
         }
     }
-    pannierDisplay();
-
-// Retire l'objet de dataPannier grace a splice
-
+        pannierDisplay();
 }
 
 

@@ -14,7 +14,7 @@ let id;
 let searchParams = new URLSearchParams(window.location.search)
 if (searchParams.has("id")) {
     id = searchParams.get("id")
-    console.log(" L'id du récupéré dans l'URL : " , id)
+    console.log(" L'id du récupéré dans l'URL : ", id)
 }
 // console.log(window.location.search)
 // ---------------------------
@@ -39,13 +39,17 @@ const productDisplay = async () => {
      <img src="${productData.imageUrl}" alt="${productData.altTxt}">
     `
     nameProduct.innerHTML = productData.name;
-    priceProduct.innerHTML = productData.price;
+    priceProduct.innerHTML = productData.price / 10;
     descriptionProduct.innerHTML = productData.description;
-    colorsOfProduct.innerHTML = productData.colors.map((colors) =>
-        `
-     <option value="${colors}">${colors}</option>
+    colorsOfProduct.innerHTML += productData.colors
+        .map((color) =>
+            `
+     <option value="${color}">${color}</option>
     `
-    ).join(" ")
+        ).join(" ")
+
+    console.log(colorsOfProduct)
+    console.log(productData.colors)
 
 }
 productDisplay();
@@ -68,34 +72,44 @@ function addToCart() {
                 name: productData.name,
                 color: colorsOptionProduct,
                 description: productData.description,
-                price: productData.price / 100,
-                quantity: parseInt(numberKanap),
+                price: productData.price / 10,
+                quantity: numberKanap,
                 _id: id,
             }
+            //Ne valide pas si il n'y a pas de quantité et de couleurs
+            if (!colorsOptionProduct || !numberKanap || numberKanap > 100) {
+                alert("Choisissez une couleurs et un nombrer d'article entre 1 et 100")
+            } else {
+                console.log(kanap.color)
+                console.log(kanap.quantity)
+                //Envoie les données dans le local storage + change len quantité si la couleur et l'id est la même
+                if (typeof localStorage != 'undefined' && localStorage.getItem("dataPannier") != null) {
+                    tableauPannier = JSON.parse(localStorage.getItem("dataPannier"));
+                    const findProduct = tableauPannier.find((product) =>
+                        kanap._id === product._id && kanap.color === product.color
+                    )
+                    if (findProduct) {
+                        findProduct.quantity = numberKanap;
+                        document.querySelector(".item__content__settings__quantity > label").innerHTML =
+                            `
+                            Vous avez maintenant ${numberKanap} ${kanap.name} ${colorsOptionProduct} dans le pannier
+                            `
+                        localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
 
-            if (typeof localStorage != 'undefined' && localStorage.getItem("dataPannier") != null) {
-                tableauPannier = JSON.parse(localStorage.getItem("dataPannier"));
-                const findProduct = tableauPannier.find((product) =>
-                    kanap._id === product._id && kanap.color === product.color
-                )
-                console.log(findProduct)
-                if (findProduct){
-                    console.log("meme produit")
-                    findProduct.quantity = numberKanap;
-                    localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
-
+                    } else {
+                        tableauPannier.push(kanap)
+                        localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
+                        document.querySelector(".item__content__settings__quantity > label").innerHTML =
+                            `Nombre d'article(s) (1-100) :`
+                    }
                 } else {
                     tableauPannier.push(kanap)
                     localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
                 }
-            } else {
-                tableauPannier.push(kanap)
-                localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
+                // tableauPannier.push(kanap);
+                //Je stock dans le local storage pour récupérer les infos dans cart.js
+                // localStorage.setItem("dataPannier", JSON.stringify(tableauPannier));
             }
-
-            // tableauPannier.push(kanap);
-            //Je stock dans le local storage pour récupérer les infos dans cart.js
-            // localStorage.setItem("dataPannier", JSON.stringify(tableauPannier));
         }
     )
 };
