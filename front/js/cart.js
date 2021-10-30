@@ -39,7 +39,7 @@ window.onload = function () {
             if (dataPannier.length !== 0) {
                 const functionDeleteItem = () => {
                     const deleteItem = document.querySelectorAll('p.deleteItem')
-
+                    console.log(deleteItem)
                     for (let i = 0; i < deleteItem.length; i++) {
                         deleteItem[i].addEventListener('click', (e) => {
                             const getId = e.path[4].getAttribute("data-id")
@@ -54,6 +54,30 @@ window.onload = function () {
                         })
                     }
                 };
+
+                const addQuantity = () => {
+                    const inputQuantity = document.querySelectorAll("input.itemQuantity");
+                    for (let q = 0; q < inputQuantity.length; q++) {
+                        console.log(inputQuantity[q])
+
+                        inputQuantity[q].addEventListener('change', (e) => {
+                            let valueQuantity = e.target.value;
+                            dataPannier[q].quantity = parseInt(valueQuantity)
+
+                            if (dataPannier[q].quantity !== 0 && dataPannier[q].quantity < 100 ){
+                            localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
+                            pannierDisplay();
+                            } else if (dataPannier[q].quantity === 0) {
+                                alert("Cliquez sur supprimer pour retirer l'article")
+                            } else if (dataPannier[q].quantity > 100) {
+                                alert("Pas plus de 100 articles dans le panier")
+                            }
+
+                        })
+                    }
+
+                }
+                addQuantity()
                 functionDeleteItem();
             } else {
                 localStorage.clear();
@@ -74,6 +98,7 @@ window.onload = function () {
                     for (let t = 0; t < dataPannier.length; t++) {
                         let priceArticleInPanier = dataPannier[t].price;
                         let quantityDeUnArticle = dataPannier[t].quantity;
+
 
                         let calculPriceUnArticle = priceArticleInPanier * quantityDeUnArticle
 
@@ -97,19 +122,18 @@ window.onload = function () {
                     console.log(prixTotal)
 
                 }
-                    functionPrixTotalPanier();
+                functionPrixTotalPanier();
             } else {
                 document.querySelector("#cartAndFormContainer > h1").innerHTML =
                     `
                    <h1>Panier vide</h1>
-                 
                     `
                 totalPrice.textContent = 0;
                 totalQuantity.textContent = 0;
             }
         }
     }
-        pannierDisplay();
+    pannierDisplay();
 }
 
 

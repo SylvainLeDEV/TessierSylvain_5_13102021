@@ -3,6 +3,7 @@ const nameProduct = document.querySelector("#title")
 const priceProduct = document.querySelector("#price");
 const descriptionProduct = document.querySelector("#description");
 const colorsOfProduct = document.querySelector("#colors");
+const colorsOptionProduct = document.querySelector("select").value;
 const quantityProduct = document.querySelector("#quantity");
 const addPanier = document.querySelector("#addToCart");
 
@@ -60,6 +61,24 @@ quantityProduct.addEventListener('change', (e) => {
     numberKanap = parseInt(e.target.value);
 })
 
+function onChangeColor() {
+    const colorsOptionProduct = document.querySelector("select");
+    colorsOptionProduct.addEventListener('change', (e) => {
+        const findColor = dataPannier.find((colors) =>
+            dataPannier.color === colors.color
+        )
+        if (findColor) {
+            document.querySelector(".item__content__settings__quantity > label").innerHTML =
+                `Nombre d'article(s) (1-100) :`
+            console.log(e.target.value)
+        }
+
+    });
+
+}
+
+// onChangeColor()
+
 function addToCart() {
 
     addPanier.addEventListener('click', (e) => {
@@ -95,7 +114,6 @@ function addToCart() {
                             Vous avez maintenant ${numberKanap} ${kanap.name} ${colorsOptionProduct} dans le pannier
                             `
                         localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
-
                     } else {
                         tableauPannier.push(kanap)
                         localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
