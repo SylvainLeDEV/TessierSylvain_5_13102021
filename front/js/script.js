@@ -13,12 +13,9 @@
 //l'acceuil -----------------------------------------------------
 const sectionCards = document.getElementById("items");
 console.log(sectionCards)
-
-
 //---------------------------
 //Variable pour stocker les données des canapé.
 let kanapData = [];
-
 //Fonction async pour aller chercher les donées dans l'api
 const fetchDataKanap = async () => {
 
@@ -31,11 +28,19 @@ const fetchDataKanap = async () => {
     console.log("Les datas de l'API : ", kanapData)
 }
 
-// Une fonction pour afficher les canapé dans les cards
-const kanapCardsDisplay = async () => {
-    //ça attend pour faire la suite grace à async et await
-    await fetchDataKanap();
+function totalProductDisplay() {
+    const totalPanierDisplay = document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(2) > li")
+    //Total d'articles dans le panier
+    if (localStorage.getItem("totalProduct") === null){
+        totalPanierDisplay.textContent = `Panier`
+    } else {
+        totalPanierDisplay.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))}`
+    }
+}
 
+// Une fonction pour afficher les canapé dans les cards
+const kanapCardsDisplay = () => {
+    totalProductDisplay();
     sectionCards.innerHTML = kanapData.map((data) =>
         `
         <a href="./product.html?id=${data._id}">
@@ -48,5 +53,6 @@ const kanapCardsDisplay = async () => {
         `
     ).join("")//join enlève les guillemets entre chaque article.
 };
-kanapCardsDisplay();
 
+fetchDataKanap()
+    .then(() => kanapCardsDisplay())
