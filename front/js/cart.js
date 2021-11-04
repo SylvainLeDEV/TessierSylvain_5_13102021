@@ -69,7 +69,6 @@ window.onload = function () {
                         let priceArticleInPanier = dataPannier[t].price;
                         let quantityDeUnArticle = dataPannier[t].quantity;
 
-
                         let calculPriceUnArticle = priceArticleInPanier * quantityDeUnArticle
 
                         //Je mes les prix et articles dans une variable "prixTotalPanier" et "quantityArticleTotal"
@@ -99,27 +98,31 @@ window.onload = function () {
                         console.log(inputQuantity[q])
 
                         inputQuantity[q].addEventListener('change', (e) => {
-                            let valueQuantity = e.target.value;
+                            let valueQuantity = parseInt(e.target.value);
+                            console.log(valueQuantity)
 
-                            if (dataPannier[q].quantity !== 0 && dataPannier[q].quantity < 100) {
+                            if (valueQuantity === 0) {
+                                alert("Cliquez sur supprimer pour retirer l'article")
+                                console.log("0")
+
+                            } else if (valueQuantity > 100) {
+                                alert("Pas plus de 100 articles dans le panier")
+                                console.log("+100")
+
+                            } if (valueQuantity !== 0 && valueQuantity < 100) {
                                 dataPannier[q].quantity = parseInt(valueQuantity);
                                 localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
 
                                 document.querySelectorAll(".cart__item__content__settings__quantity > p")[q].textContent = 'Qté : ' + valueQuantity;
                                 document.querySelector("#totalQuantity").textContent = valueQuantity;
                                 functionPrixTotalPanier();
-                                // pannierDisplay();
-                            } else if (dataPannier[q].quantity === 0) {
-                                alert("Cliquez sur supprimer pour retirer l'article")
-                            } else if (dataPannier[q].quantity > 100) {
-                                alert("Pas plus de 100 articles dans le panier")
                             }
 
                         })
                     }
 
                 }
-                functionPrixTotalPanier()
+                functionPrixTotalPanier();
                 changeQuantity();
                 functionDeleteItem();
             } else {
