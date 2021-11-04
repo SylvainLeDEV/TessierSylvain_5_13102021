@@ -55,36 +55,6 @@ window.onload = function () {
                     }
                 };
 
-                const addQuantity = () => {
-                    const inputQuantity = document.querySelectorAll("input.itemQuantity");
-                    for (let q = 0; q < inputQuantity.length; q++) {
-                        console.log(inputQuantity[q])
-
-                        inputQuantity[q].addEventListener('change', (e) => {
-                            let valueQuantity = e.target.value;
-                            dataPannier[q].quantity = parseInt(valueQuantity)
-
-                            if (dataPannier[q].quantity !== 0 && dataPannier[q].quantity < 100 ){
-                            localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
-                            pannierDisplay();
-                            } else if (dataPannier[q].quantity === 0) {
-                                alert("Cliquez sur supprimer pour retirer l'article")
-                            } else if (dataPannier[q].quantity > 100) {
-                                alert("Pas plus de 100 articles dans le panier")
-                            }
-
-                        })
-                    }
-
-                }
-                addQuantity()
-                functionDeleteItem();
-            } else {
-                localStorage.clear();
-            }
-
-
-            if (dataPannier.length !== 0) {
                 const functionPrixTotalPanier = () => {
                     const totalPrice = document.querySelector("#totalPrice");
                     const totalQuantity = document.querySelector("#totalQuantity")
@@ -122,8 +92,39 @@ window.onload = function () {
                     console.log(prixTotal)
 
                 }
-                functionPrixTotalPanier();
+
+                const changeQuantity = () => {
+                    const inputQuantity = document.querySelectorAll("input.itemQuantity");
+                    for (let q = 0; q < inputQuantity.length; q++) {
+                        console.log(inputQuantity[q])
+
+                        inputQuantity[q].addEventListener('change', (e) => {
+                            let valueQuantity = e.target.value;
+
+                            if (dataPannier[q].quantity !== 0 && dataPannier[q].quantity < 100) {
+                                dataPannier[q].quantity = parseInt(valueQuantity);
+                                localStorage.setItem("dataPannier", JSON.stringify(dataPannier))
+
+                                document.querySelectorAll(".cart__item__content__settings__quantity > p")[q].textContent = 'Qté : ' + valueQuantity;
+                                document.querySelector("#totalQuantity").textContent = valueQuantity;
+                                functionPrixTotalPanier();
+                                // pannierDisplay();
+                            } else if (dataPannier[q].quantity === 0) {
+                                alert("Cliquez sur supprimer pour retirer l'article")
+                            } else if (dataPannier[q].quantity > 100) {
+                                alert("Pas plus de 100 articles dans le panier")
+                            }
+
+                        })
+                    }
+
+                }
+                functionPrixTotalPanier()
+                changeQuantity();
+                functionDeleteItem();
             } else {
+                localStorage.clear();
+
                 document.querySelector("#cartAndFormContainer > h1").innerHTML =
                     `
                    <h1>Panier vide</h1>

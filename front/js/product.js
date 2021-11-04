@@ -27,13 +27,11 @@ const fetchDataProduct = async () => {
         .then((res) => res.json())
         .then((data) => productData = data)
 
-    console.log("Produit dans productData : ", productData);
+    // console.log("Produit dans productData : ", productData);
 }
 
 //Afficher le produit--------------------------------
-const productDisplay = async () => {
-
-    await fetchDataProduct();
+const productDisplay = () => {
 
     imgProduct.innerHTML =
         `
@@ -48,39 +46,50 @@ const productDisplay = async () => {
      <option value="${color}">${color}</option>
     `
         ).join(" ")
-
-    console.log(colorsOfProduct)
-    console.log(productData.colors)
-
 }
-productDisplay();
-
-//Quantité du produit
-let numberKanap;
-quantityProduct.addEventListener('change', (e) => {
-    numberKanap = parseInt(e.target.value);
-})
 
 function onChangeColor() {
     const colorsOptionProduct = document.querySelector("select");
     colorsOptionProduct.addEventListener('change', (e) => {
-        const findColor = dataPannier.find((colors) =>
-            dataPannier.color === colors.color
-        )
-        if (findColor) {
-            document.querySelector(".item__content__settings__quantity > label").innerHTML =
-                `Nombre d'article(s) (1-100) :`
-            console.log(e.target.value)
+        const dataPanier = JSON.parse(localStorage.getItem("dataPannier"));
+
+        if (dataPanier !== null) {
+            console.log("sa mere")
+            for (let c = 0; c < dataPanier.length; c++) {
+                const productLocalStorage = dataPanier[c].name + dataPanier[c].color
+                const product = e.path[3].querySelector(".item__content__titlePrice h1").textContent + e.target.value
+                const quantityProduct = dataPanier[c].quantity
+
+                if (productLocalStorage !== product) {
+                    document.querySelector(".item__content__settings__quantity > label").textContent = "Nombre d'article(s) (1-100) : ";
+                    console.log("not same")
+
+                }
+            }
+
+            for (let c = 0; c < dataPanier.length; c++) {
+                const productLocalStorage = dataPanier[c].name + dataPanier[c].color
+                const product = e.path[3].querySelector(".item__content__titlePrice h1").textContent + e.target.value
+                const quantityProduct = dataPanier[c].quantity
+
+                if (productLocalStorage === product) {
+                    document.querySelector(".item__content__settings__quantity > label").textContent =
+                        `
+                            Vous avez ${dataPanier[c].quantity} ${dataPanier[c].name} ${dataPanier[c].color} dans le pannier
+                            `
+                    console.log("same")
+                }
+            }
         }
-
     });
-
 }
 
-// onChangeColor()
-
 function addToCart() {
-
+//Quantité du produit
+    let numberKanap;
+    quantityProduct.addEventListener('change', (e) => {
+        numberKanap = parseInt(e.target.value);
+    })
     addPanier.addEventListener('click', (e) => {
             e.preventDefault();
             let tableauPannier = [];
@@ -109,16 +118,10 @@ function addToCart() {
                     )
                     if (findProduct) {
                         findProduct.quantity = numberKanap;
-                        document.querySelector(".item__content__settings__quantity > label").innerHTML =
-                            `
-                            Vous avez maintenant ${numberKanap} ${kanap.name} ${colorsOptionProduct} dans le pannier
-                            `
                         localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
                     } else {
                         tableauPannier.push(kanap)
                         localStorage.setItem("dataPannier", JSON.stringify(tableauPannier))
-                        document.querySelector(".item__content__settings__quantity > label").innerHTML =
-                            `Nombre d'article(s) (1-100) :`
                     }
                 } else {
                     tableauPannier.push(kanap)
@@ -131,4 +134,8 @@ function addToCart() {
         }
     )
 };
-addToCart();
+
+fetchDataProduct()
+    .then(() => productDisplay())
+    .then(() => onChangeColor())
+    .then(() => addToCart())
