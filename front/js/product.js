@@ -30,13 +30,13 @@ const fetchDataProduct = async () => {
     // console.log("Produit dans productData : ", productData);
 }
 
-//Total d'articles dans le panier
+//Total d'articles dans le panier --------------------
 function totalProductDisplay() {
     const totalPanierDisplay = document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(2) > li")
     if (localStorage.getItem("totalProduct") === null) {
         totalPanierDisplay.textContent = `Panier`
     } else {
-        totalPanierDisplay.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))}`
+        totalPanierDisplay.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))} articles`
     }
 }
 
@@ -58,7 +58,7 @@ const productDisplay = () => {
     `
         ).join(" ")
 }
-
+//Lorsque je change de couleur ça affiche le montant d'articles dans le panier --------
 function onChangeColor(e) {
     const colorsOptionProduct = document.querySelector("select");
     colorsOptionProduct.addEventListener('change', (e) => {
@@ -93,6 +93,7 @@ function onChangeColor(e) {
     });
 }
 
+//L'orsque je click j'ajoute le produit au panier (LocalStorage) ---------------------
 function addToCart() {
     let tableauPannier = [];
 
