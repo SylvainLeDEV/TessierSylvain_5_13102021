@@ -35,8 +35,8 @@ window.onload = function () {
 </article>
         `
             ).join(" ")
-            // Pour supprimer une article
             if (dataPannier.length !== 0) {
+// Pour supprimer une article------------------------------------
                 const functionDeleteItem = () => {
                     const deleteItem = document.querySelectorAll('p.deleteItem')
                     console.log(deleteItem)
@@ -55,6 +55,7 @@ window.onload = function () {
                     }
                 };
 
+//Calcule du prix total et du nombre d'articles total -------------------------
                 const functionPrixTotalPanier = () => {
                     const totalPrice = document.querySelector("#totalPrice");
                     const totalQuantity = document.querySelector("#totalQuantity")
@@ -79,7 +80,8 @@ window.onload = function () {
 //La méthode reduce() applique une fonction qui est un « accumulateur » et qui traite chaque valeur d'une liste (de la gauche vers la droite) afin de la réduire à une seule valeur.
                     const reducerForArticles = (previousValue, currentValue) => previousValue + currentValue;
                     const articleTotal = quantityArticleTotal.reduce(reducerForArticles, 0)
-                    //Affichage résultat
+                    //Affichage résultat d'article total et je réactulise le totalProduct dans le localStorage.
+                    localStorage.setItem("totalProduct" , JSON.stringify(articleTotal))
                     totalQuantity.textContent = articleTotal;
                     console.log(articleTotal)
 
@@ -92,6 +94,7 @@ window.onload = function () {
 
                 }
 
+// Je modifie la quatité dans le panier-----------------------
                 const changeQuantity = () => {
                     const inputQuantity = document.querySelectorAll("input.itemQuantity");
                     for (let q = 0; q < inputQuantity.length; q++) {
