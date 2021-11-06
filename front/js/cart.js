@@ -239,7 +239,6 @@ window.onload = function () {
                 }
             }
 
-//Stock dans le localStorage pour garder les information de la personne pour ne pas tout réecrire
             if (firstNameControle()) {
                 textPrenomErrorMsg.style.color = "green";
                 textPrenomErrorMsg.textContent = "Prénom valide";
@@ -283,13 +282,16 @@ window.onload = function () {
 // ------------------- FIN VALIDATION FORMULAIRE ---------------------//
 
 //Envoyer les produits et les data du formulaire au serveur
+            let arrayID =[]
+            // Je parcours les id dans dataPanier et je les push dans arrayID pour envoyer uniquement les id
+            dataPannier.forEach(x=>{
+                arrayID.push(x._id);
+            });
             const dataAEnvoyer = {
-                dataPannier,
-                formulaireValue
+                'products': arrayID,
+                'contact': formulaireValue
             }
-            console.log(dataAEnvoyer)
 // Envoyer l'objet..
-
             const envoyerData = fetch("http://localhost:3000/api/products/order", {
                 method: "POST",
                 body: JSON.stringify(dataAEnvoyer),
@@ -297,13 +299,23 @@ window.onload = function () {
                     "Content-Type" : "application/json",
                 }
             });
+            envoyerData
+                .then( async (res) => {
+                    console.log("res")
+                    const contenu = await res.json()
+                    console.log(contenu.orderId)
+                })
+                .catch((e) => {
+                console.log(e)
+            })
+
         });
     }
 
+//Stock dans le localStorage pour garder les information de la personne pour ne pas tout réecrire
     if (localStorage.getItem("Formulaire") !== null) {
         //On récupére les data du formulaire dans localStorage pour les injecter dans le formulaire
         const dataLocalStorageObject = JSON.parse(localStorage.getItem("Formulaire"))
-
 
         //Fonction pour garder les champs du formulaire rempli.
         function inputRempliParLocalStorage(input) {
