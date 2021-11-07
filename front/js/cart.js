@@ -129,7 +129,6 @@ window.onload = function () {
                 functionDeleteItem();
             } else {
                 localStorage.clear();
-
                 document.querySelector("#cartAndFormContainer > h1").innerHTML =
                     `
                    <h1>Panier vide</h1>
@@ -162,8 +161,8 @@ window.onload = function () {
 
     //--------------------------------------------------------------------------------
 // Je remet 2 fois la condition pour que ça soit plus compréhensible.
-    if (typeof localStorage !== 'undefined' && localStorage.getItem("dataPannier") !== null) {
-        inputCommander.addEventListener('click', (e) => {
+    inputCommander.addEventListener('click', (e) => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem("dataPannier") !== null) {
             e.preventDefault();
 
 //Class permet de crée un objet (Peut-etre pas utiles pour ce projet vu qu'il y a que 1 object)
@@ -182,7 +181,7 @@ window.onload = function () {
 
 // ------------------- VALIDATION FORMULAIRE avec RegEx---------------------//
 //Les expressions régulières sont des schémas ou des motifs utilisés pour effectuer des recherches et des remplacements dans des chaines de caractères.
-            //Expression de function qui va nous permettre de réetuliser la regEx 3 fois.
+// Expression de function qui va nous permettre de réetuliser la regEx 3 fois.
             const regExFirstNameLastNameVille = (value) => {
                 return /^([A-Za-z]{3,20})?((-){0,1})?([A-Za-z]{3,20})$/.test(value)
             }
@@ -274,43 +273,73 @@ window.onload = function () {
                 textEmailErrorMsg.style.color = "Red";
                 textEmailErrorMsg.textContent = "Chiffre et symbole ne sont pas autorisé. Ne pas dépasser les 20 caractères minimum 3 caractères";
             }
+
+            // Validation formulaire plus simple
+            document.querySelector("#order").addEventListener('click', (e) =>{
+                let valid = true;
+                for (let input of document.querySelectorAll(".cart__order__form input,.cart__order__form textarea")){
+                    valid &= input.reportValidity();
+                    if (!valid){
+                        break;
+                    }
+                }
+                if (valid){
+                    alert("Formulaire OK");
+                }
+            })
+
+// ------------------- FIN VALIDATION FORMULAIRE ---------------------//
             if (firstNameControle() && lastNameControle() && villeNameControle() && adresseControle() && emailControle()) {
                 localStorage.removeItem("Formulaire")
                 localStorage.setItem("Formulaire", JSON.stringify(formulaireValue))
-            }
-
-// ------------------- FIN VALIDATION FORMULAIRE ---------------------//
 
 //Envoyer les produits et les data du formulaire au serveur
-            let arrayID =[]
-            // Je parcours les id dans dataPanier et je les push dans arrayID pour envoyer uniquement les id
-            dataPannier.forEach(x=>{
-                arrayID.push(x._id);
-            });
-            const dataAEnvoyer = {
-                'products': arrayID,
-                'contact': formulaireValue
-            }
-// Envoyer l'objet..
-            const envoyerData = fetch("http://localhost:3000/api/products/order", {
-                method: "POST",
-                body: JSON.stringify(dataAEnvoyer),
-                headers : {
-                    "Content-Type" : "application/json",
+                // Je parcours les id dans dataPanier et je les push dans arrayID pour envoyer uniquement les id
+                let arrayID = []
+                dataPannier.forEach((x) => {
+                    arrayID.push(x._id);
+                });
+                //Fait en forEach et avec boucle for
+                // let arrID = [];
+                // console.log(arrID)
+                // for (let d = 0; d < dataPannier.length; d++) {
+                //     arrID.push(dataPannier[d]._id)
+                // }
+                const dataAEnvoyer = {
+                    'products': arrayID,
+                    'contact': formulaireValue
                 }
-            });
-            envoyerData
-                .then( async (res) => {
-                    console.log("res")
-                    const contenu = await res.json()
-                    console.log(contenu.orderId)
-                })
-                .catch((e) => {
-                console.log(e)
-            })
+// Envoyer l'objet avec la method POST.
+                const envoyerData = fetch("http://localhost:3000/api/products/order", {
+                    method: "POST",
+                    body: JSON.stringify(dataAEnvoyer),
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+                let response;
+                envoyerData
+                    .then(async (res) => {
+                        response = await res.json()
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    });
 
-        });
-    }
+                setTimeout(() => {
+                    window.location.href = "http://localhost:63342/TessierSylvain_5_13102021/front/html/confirmation.html?_orderId=" + response.orderId;
+                    console.log(response.orderId)
+                }, 1000)
+            }
+        } else {
+            console.log("double lol")
+            e.preventDefault()
+            document.querySelector("#cartAndFormContainer > h1").innerHTML =
+                `
+                   <h1>Choisissez des articles</h1>
+                    `
+        }
+    });
 
 //Stock dans le localStorage pour garder les information de la personne pour ne pas tout réecrire
     if (localStorage.getItem("Formulaire") !== null) {
