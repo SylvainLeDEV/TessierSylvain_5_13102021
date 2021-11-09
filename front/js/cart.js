@@ -91,6 +91,7 @@ window.onload = function () {
                     //J'affiche le résultat du prix total
                     totalPrice.textContent = prixTotal.toFixed(2);
                     // console.log(prixTotal)
+                    localStorage.setItem("totalPrise", prixTotal.toFixed(2));
 
                 }
 
