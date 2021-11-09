@@ -59,7 +59,7 @@ function compteRebour(value) {
 const buttonReturnToHome = document.querySelector(".confirmation > p")
 buttonReturnToHome.innerHTML +=
     `<br><div class="buttonReturnToHomme" style="padding-top: 15px">
-     <input type="submit" id="order" value="Revenir à l'accueil (${compteRebour(600)})">
+     <input type="submit" id="order" value="Revenir à l'accueil (${compteRebour(15)})">
      </div>`
 
 const button = document.querySelector("#limitedWidthBlock > div > p > div > input")
