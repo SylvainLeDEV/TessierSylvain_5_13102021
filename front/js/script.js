@@ -12,7 +12,7 @@
 
 //l'acceuil -----------------------------------------------------
 const sectionCards = document.getElementById("items");
-console.log(sectionCards)
+
 //---------------------------
 //Variable pour stocker les données des canapé.
 let kanapData = [];
@@ -34,7 +34,7 @@ function totalProductDisplay() {
     if (localStorage.getItem("totalProduct") === null){
         totalPanierDisplay.textContent = `Panier`
     } else {
-        totalPanierDisplay.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))}`
+        totalPanierDisplay.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))} articles`
     }
 }
 
