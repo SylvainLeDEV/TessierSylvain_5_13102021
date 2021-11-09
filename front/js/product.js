@@ -58,6 +58,7 @@ const productDisplay = () => {
     `
         ).join(" ")
 }
+
 //Lorsque je change de couleur ça affiche le montant d'articles dans le panier --------
 function onChangeColor(e) {
     const colorsOptionProduct = document.querySelector("select");
@@ -72,7 +73,6 @@ function onChangeColor(e) {
 
                 if (productLocalStorage !== product) {
                     document.querySelector(".item__content__settings__quantity > label").textContent = "Nombre d'article(s) (1-100) : ";
-                    console.log("not same")
 
                 }
             }
@@ -86,7 +86,6 @@ function onChangeColor(e) {
                 if (productLocalStorage === product) {
                     document.querySelector(".item__content__settings__quantity > label").textContent =
                         `Vous avez ${quantityProduct} ${dataPanier[c].name} ${dataPanier[c].color} dans le pannier`
-                    console.log("same")
                 }
             }
         }
@@ -102,11 +101,12 @@ function addToCart() {
         //Total d'articles dans le panier
         let tableauTotalProduct = 0;
         tableauPannier.forEach((productKanap) => {
-            console.log(productKanap)
             tableauTotalProduct += productKanap.quantity
         })
-        localStorage.setItem("totalProduct", JSON.stringify(tableauTotalProduct))
-        tableauTotalProduct.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))}`
+        if (tableauTotalProduct !== 0) {
+            localStorage.setItem("totalProduct", JSON.stringify(tableauTotalProduct))
+            tableauTotalProduct.textContent = `Panier : ${JSON.parse(localStorage.getItem("totalProduct"))}`
+        }
     }
 
 

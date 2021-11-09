@@ -271,25 +271,25 @@ window.onload = function () {
                 textEmailErrorMsg.textContent = "Email valide";
             } else {
                 textEmailErrorMsg.style.color = "Red";
-                textEmailErrorMsg.textContent = "Chiffre et symbole ne sont pas autorisé. Ne pas dépasser les 20 caractères minimum 3 caractères";
+                textEmailErrorMsg.textContent = "Veuillez respecter le format e-mail exemple : johnDoe@gmail.fr";
             }
 
             // Validation formulaire plus simple
-            document.querySelector("#order").addEventListener('click', (e) =>{
-                let valid = true;
-                for (let input of document.querySelectorAll(".cart__order__form input,.cart__order__form textarea")){
-                    valid &= input.reportValidity();
-                    if (!valid){
-                        break;
-                    }
-                }
-                if (valid){
-                    alert("Formulaire OK");
-                }
-            })
+            // document.querySelector("#order").addEventListener('click', (e) =>{
+            //     let valid = true;
+            //     for (let input of document.querySelectorAll(".cart__order__form input,.cart__order__form textarea")){
+            //         valid &= input.reportValidity();
+            //         if (!valid){
+            //             break;
+            //         }
+            //     }
+            //     if (valid){
+            //         alert("Formulaire OK");
+            //     }
+            // })
 
 // ------------------- FIN VALIDATION FORMULAIRE ---------------------//
-            if (firstNameControle() && lastNameControle() && villeNameControle() && adresseControle() && emailControle()) {
+            if (firstNameControle() && lastNameControle() && villeNameControle() && adresseControle() && emailControle() && dataPannier !== null) {
                 localStorage.removeItem("Formulaire")
                 localStorage.setItem("Formulaire", JSON.stringify(formulaireValue))
 
