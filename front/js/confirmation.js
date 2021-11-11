@@ -16,7 +16,7 @@ if (JSON.parse(localStorage.getItem("dataPannier")) !== null) {
 const resumeCommande = JSON.parse(localStorage.getItem("dataPannier"));
 const resumePrise = JSON.parse(localStorage.getItem("totalPrise"));
 const resumeTotalArticles = JSON.parse(localStorage.getItem("totalProduct"))
-console.log(resumePrise + "   " + resumeTotalArticles)
+// console.log(resumePrise + "   " + resumeTotalArticles)
 
 const listeKanapCommande = document.querySelector("#limitedWidthBlock > div >p")
 listeKanapCommande.innerHTML += resumeCommande.map((panier) =>
@@ -38,15 +38,15 @@ for (let x = 0; x < listeKanapCommandeStyle.length; x++) {
 function compteRebour(value) {
     setTimeout(() => {
         const buttonReturnToHome = document.querySelector("#order")
-        console.log(buttonReturnToHome)
+        // console.log(buttonReturnToHome)
         let counter = value;
         let timer = setInterval(() => {
             counter--
             buttonReturnToHome.value = "Revenir à l'accueil (" + counter + ")";
             if (counter === 0) {
                 window.location.reload();
-                console.log("over")
-                window.location.href = "index.html"
+                // console.log("over");
+                window.location.href = "index.html";
                 localStorage.clear();
                 clearInterval(timer);
             }
@@ -59,7 +59,7 @@ function compteRebour(value) {
 const buttonReturnToHome = document.querySelector(".confirmation > p")
 buttonReturnToHome.innerHTML +=
     `<br><div class="buttonReturnToHomme" style="padding-top: 15px">
-     <input type="submit" id="order" value="Revenir à l'accueil (${compteRebour(15)})">
+     <input type="submit" id="order" value="Revenir à l'accueil (${compteRebour(20)})">
      </div>`
 
 const button = document.querySelector("#limitedWidthBlock > div > p > div > input")
@@ -88,11 +88,10 @@ button.addEventListener("mouseleave", (e) => {
 
 const cleanLocalStorageOnClick = [document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(2) > li"),
     document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(1) > li"), document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > a > img")];
-console.log(cleanLocalStorageOnClick)
+// console.log(cleanLocalStorageOnClick)
 cleanLocalStorageOnClick.forEach(el => {
-    console.log(el)
+    // console.log(el)
     el.addEventListener('click', (e) => {
-        console.log(e, "suce")
         window.location.reload();
         localStorage.clear();
     })

@@ -322,6 +322,7 @@ window.onload = function () {
                 envoyerData
                     .then(async (res) => {
                         response = await res.json()
+                        console.log(response)
                     })
                     .catch((e) => {
                         console.log(e)
@@ -333,7 +334,6 @@ window.onload = function () {
                 }, 1000)
             }
         } else {
-            console.log("double lol")
             e.preventDefault()
             document.querySelector("#cartAndFormContainer > h1").innerHTML =
                 `
