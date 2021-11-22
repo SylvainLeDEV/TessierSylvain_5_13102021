@@ -10,12 +10,16 @@ const addPanier = document.querySelector("#addToCart");
 let productData = [];
 
 //URL------------------------
-//On récupère l'id dans l'url du canapé que on inject ensuit dans le fetch
+//
+/**
+ *On récupère l'id dans l'url du canapé que on inject ensuit dans le fetch
+ * @type {URLSearchParams}
+ */
 let id;
 let searchParams = new URLSearchParams(window.location.search)
 if (searchParams.has("id")) {
     id = searchParams.get("id")
-    console.log(" L'id du récupéré dans l'URL : ", id)
+    console.log(" L'id récupéré dans l'URL : ", id)
 }
 // console.log(window.location.search)
 // ---------------------------
@@ -27,7 +31,7 @@ const fetchDataProduct = async () => {
         .then((res) => res.json())
         .then((data) => productData = data)
 
-    // console.log("Produit dans productData : ", productData);
+    console.log("Produit dans productData : ", productData);
 }
 
 //Total d'articles dans le panier --------------------
@@ -59,6 +63,7 @@ const productDisplay = () => {
         ).join(" ")
 }
 
+
 //Lorsque je change de couleur ça affiche le montant d'articles dans le panier --------
 function onChangeColor(e) {
     const colorsOptionProduct = document.querySelector("select");
@@ -70,6 +75,8 @@ function onChangeColor(e) {
                 const productLocalStorage = dataPanier[c].name + dataPanier[c].color
                 const product = e.path[3].querySelector(".item__content__titlePrice h1").textContent + e.target.value
                 const quantityProduct = dataPanier[c].quantity
+                // console.log(product)
+                // console.log(productLocalStorage)
 
                 if (productLocalStorage !== product) {
                     document.querySelector(".item__content__settings__quantity > label").textContent = "Nombre d'article(s) (1-100) : ";
@@ -81,6 +88,7 @@ function onChangeColor(e) {
                 const productLocalStorage = dataPanier[c].name + dataPanier[c].color
                 const product = e.path[3].querySelector(".item__content__titlePrice h1").textContent + e.target.value
                 const quantityProduct = dataPanier[c].quantity
+                // console.log(quantityProduct)
 
 
                 if (productLocalStorage === product) {
@@ -97,7 +105,6 @@ function addToCart() {
     let tableauPannier = [];
 
     function totalProduct() {
-        const totalPanierDisplay = document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(2) > li")
         //Total d'articles dans le panier
         let tableauTotalProduct = 0;
         tableauPannier.forEach((productKanap) => {
@@ -115,6 +122,7 @@ function addToCart() {
     quantityProduct.addEventListener('change', (e) => {
         numberKanap = parseInt(e.target.value);
     })
+
     addPanier.addEventListener('click', (e) => {
             e.preventDefault();
             let colorsOptionProduct = document.querySelector("select").value;
@@ -132,7 +140,7 @@ function addToCart() {
             if (!colorsOptionProduct || !numberKanap || numberKanap > 100) {
                 alert("Choisissez une couleurs et un nombrer d'article entre 1 et 100")
             } else {
-                //Envoie les données dans le local storage + change len quantité si la couleur et l'id est la même
+                //Envoie les données dans le local storage + change les quantité si la couleur et l'id est la même
                 if (typeof localStorage != 'undefined' && localStorage.getItem("dataPannier") != null) {
                     tableauPannier = JSON.parse(localStorage.getItem("dataPannier"));
                     const findProduct = tableauPannier.find((product) =>
@@ -163,6 +171,7 @@ function addToCart() {
                 //Je stock dans le local storage pour récupérer les infos dans cart.js
                 // localStorage.setItem("dataPannier", JSON.stringify(tableauPannier));
             }
+        console.log( "tableauPannier qui est envoyé dans le local Storage : ", tableauPannier)
             totalProduct();
             totalProductDisplay();
         }

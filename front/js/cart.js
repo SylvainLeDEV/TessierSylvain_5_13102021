@@ -7,8 +7,8 @@ window.onload = function () {
 
         //On récupère les information du localStorage
         if (typeof localStorage !== 'undefined' && localStorage.getItem("dataPannier") !== null) {
-            dataPannier = JSON.parse(localStorage.getItem("dataPannier"));
-            // console.log("data pannier : ", dataPannier)
+           dataPannier = JSON.parse(localStorage.getItem("dataPannier"));
+            console.log("dataPannier dans le localStorage: ", dataPannier)
 
             product.innerHTML = dataPannier.map((pannier) =>
 
@@ -39,12 +39,15 @@ window.onload = function () {
 // Pour supprimer une article------------------------------------
                 const functionDeleteItem = () => {
                     const deleteItem = document.querySelectorAll('p.deleteItem')
-                    // console.log(deleteItem)
+                    console.log(" bouton supprimé : ", deleteItem)
                     for (let i = 0; i < deleteItem.length; i++) {
                         deleteItem[i].addEventListener('click', (e) => {
                             const getId = e.path[4].getAttribute("data-id")
                             const getColor = e.path[4].getAttribute("data-color")
-                            // console.log(getId + getColor)
+                            console.log(getId + getColor)
+                            console.log(e)
+
+
 
                             if (getId === dataPannier[i]._id && getColor === dataPannier[i].color) {
                                 dataPannier.splice(i, 1)// Retire l'objet de dataPannier grace a splice
@@ -91,7 +94,7 @@ window.onload = function () {
                     //J'affiche le résultat du prix total
                     totalPrice.textContent = prixTotal.toFixed(2);
                     // console.log(prixTotal)
-                    localStorage.setItem("totalPrise", prixTotal.toFixed(2));
+                    localStorage.setItem("totalPrice", prixTotal.toFixed(2));
 
                 }
 
@@ -99,12 +102,11 @@ window.onload = function () {
                 const changeQuantity = () => {
                     const inputQuantity = document.querySelectorAll("input.itemQuantity");
                     for (let q = 0; q < inputQuantity.length; q++) {
-                        // console.log(inputQuantity[q])
+                        // console.log( "Les input de quantité 'change'", inputQuantity[q])
 
                         inputQuantity[q].addEventListener('change', (e) => {
                             let valueQuantity = parseInt(e.target.value);
                             // console.log(valueQuantity)
-
                             if (valueQuantity === 0) {
                                 alert("Cliquez sur supprimer pour retirer l'article")
 
@@ -310,6 +312,7 @@ window.onload = function () {
                     'products': arrayID,
                     'contact': formulaireValue
                 }
+                console.log("Données envoyer à l'API : ", dataAEnvoyer)
 // Envoyer l'objet avec la method POST.
                 const envoyerData = fetch("http://localhost:3000/api/products/order", {
                     method: "POST",
@@ -322,7 +325,8 @@ window.onload = function () {
                 envoyerData
                     .then(async (res) => {
                         response = await res.json()
-                        console.log(response)
+                        console.log(' response :', response)
+                        console.log(response.orderId)
                     })
                     .catch((e) => {
                         console.log(e)
@@ -331,7 +335,7 @@ window.onload = function () {
                 setTimeout(() => {
                     window.location.href = "http://localhost:63342/TessierSylvain_5_13102021/front/html/confirmation.html?_orderId=" + response.orderId;
                     console.log(response.orderId)
-                }, 1000)
+                }, 7000)
             }
         } else {
             e.preventDefault()
@@ -357,7 +361,7 @@ window.onload = function () {
         inputRempliParLocalStorage("address")
         inputRempliParLocalStorage("city")
         inputRempliParLocalStorage("email")
-        console.log(dataLocalStorageObject);
+        // console.log(dataLocalStorageObject);
     }
 
 

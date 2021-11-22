@@ -14,16 +14,27 @@
 const sectionCards = document.getElementById("items");
 
 //---------------------------
-//Variable pour stocker les données des canapé.
+//
+/**
+ * Variable pour stocker les données des canapé = kanapData
+ * Fonction async pour aller chercher les donées dans l'api = fetchDataKanap
+ *@param { Object[] } kanapData
+ *@param { string } kanapData[]._id
+ *@param { array of string } kanapData[].colors
+ *@param { string } kanapData[].name
+ *@param { string } kanapData[].imageUrl
+ *@param { string } kanapData[].description
+ *@param { string } kanapData[].altTxt
+ * @type {*[]}
+ */
 let kanapData = [];
-//Fonction async pour aller chercher les donées dans l'api
 const fetchDataKanap = async () => {
 
     await fetch("http://localhost:3000/api/products")
         //La méthode .json() => méthode qui s'auto-résout en renvoyant le Body de la requête.
         .then((res) => res.json())
         .then((data) => (kanapData = data))
-        .catch((err) => alert("Une erreur est survenue :" + " " + err + " " + "Lancer l'API"))
+        .catch((err) => alert("Une erreur est survenue => " + " " + err + " " + ", il faut lancer l'API"))
 
     console.log("Les datas de l'API : ", kanapData)
 }
