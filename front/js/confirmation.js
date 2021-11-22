@@ -1,11 +1,11 @@
 if (JSON.parse(localStorage.getItem("dataPannier")) !== null) {
     let orderId;
     let searchParams = new URLSearchParams(window.location.search)
+    // console.log(window.location.search)
     if (searchParams.has("_orderId")) {
         orderId = searchParams.get("_orderId")
         console.log(" L'id du récupéré dans l'URL : ", orderId)
     }
-
 
     const displayOrderId = document.getElementById("orderId");
     displayOrderId.textContent = orderId;
@@ -14,7 +14,7 @@ if (JSON.parse(localStorage.getItem("dataPannier")) !== null) {
 }
 
 const resumeCommande = JSON.parse(localStorage.getItem("dataPannier"));
-const resumePrise = JSON.parse(localStorage.getItem("totalPrise"));
+const resumePrise = JSON.parse(localStorage.getItem("totalPrice"));
 const resumeTotalArticles = JSON.parse(localStorage.getItem("totalProduct"))
 // console.log(resumePrise + "   " + resumeTotalArticles)
 
@@ -34,7 +34,11 @@ for (let x = 0; x < listeKanapCommandeStyle.length; x++) {
     listeKanapCommandeStyle[x].style.listStyleType = "none";
 }
 
-//Fonction pour le compte a rebour
+/**
+ * Fonction => compte à rebours
+ * @param {Number} value
+ * @return {Number}
+ */
 function compteRebour(value) {
     setTimeout(() => {
         const buttonReturnToHome = document.querySelector("#order")
@@ -59,7 +63,7 @@ function compteRebour(value) {
 const buttonReturnToHome = document.querySelector(".confirmation > p")
 buttonReturnToHome.innerHTML +=
     `<br><div class="buttonReturnToHomme" style="padding-top: 15px">
-     <input type="submit" id="order" value="Revenir à l'accueil (${compteRebour(20)})">
+     <input type="submit" id="order" value="Revenir à l'accueil (${compteRebour(150)})">
      </div>`
 
 const button = document.querySelector("#limitedWidthBlock > div > p > div > input")
@@ -86,6 +90,7 @@ button.addEventListener("mouseleave", (e) => {
     button.style.boxShadow = "";
 })
 
+// Au click sur l'icon ou pannier ou acceuil
 const cleanLocalStorageOnClick = [document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(2) > li"),
     document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > nav > ul > a:nth-child(1) > li"), document.querySelector("body > header > div.limitedWidthBlockContainer.menu > div > a > img")];
 // console.log(cleanLocalStorageOnClick)
@@ -103,10 +108,6 @@ if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
         window.location.href = "index.html"
         localStorage.clear();
 }
-
-setTimeout(() => {
-    // localStorage.removeItem("")
-}, 1000)
 
 
 
