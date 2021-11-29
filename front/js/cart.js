@@ -338,7 +338,7 @@ window.onload = function () {
         inputRempliParLocalStorage("address")
         inputRempliParLocalStorage("city")
         inputRempliParLocalStorage("email")
-        // console.log(dataLocalStorageObject);
+        // console.log(dataLocalStorageObject) ;
     }
 
 
