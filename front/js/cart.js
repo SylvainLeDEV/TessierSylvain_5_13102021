@@ -308,15 +308,14 @@ window.onload = function () {
                         response = await res.json()
                         console.log(' response :', response)
                         console.log(response.orderId)
+                        window.location.href = "http://localhost:63342/TessierSylvain_5_13102021/front/html/confirmation.html?_orderId=" + response.orderId;
                     })
                     .catch((e) => {
                         console.log(e)
                     });
 
-                setTimeout(() => {
-                    window.location.href = "http://localhost:63342/TessierSylvain_5_13102021/front/html/confirmation.html?_orderId=" + response.orderId;
+
                     console.log(response.orderId)
-                }, 7000)
             }
         } else {
             e.preventDefault()
