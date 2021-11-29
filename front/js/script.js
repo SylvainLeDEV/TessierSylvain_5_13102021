@@ -1,15 +1,3 @@
-//Asynchrone--
-//-----------
-//Soit avec setTimeout ex :
-//setTimeout(() => {
-//console.log("test");
-//}, 2000);
-
-//Ou alors avec les Promise (async et await) utilisé pour ce projet.
-
-//Pour chercher un fichier text
-// fetch("http://localhost:3000/api/products").then((res) => res.text()).then((data) => console.log(data))
-
 //l'acceuil -----------------------------------------------------
 const sectionCards = document.getElementById("items");
 

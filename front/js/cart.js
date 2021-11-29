@@ -277,20 +277,6 @@ window.onload = function () {
                 textEmailErrorMsg.textContent = "Veuillez respecter le format e-mail exemple : johnDoe@gmail.fr";
             }
 
-            // Validation formulaire plus simple
-            // document.querySelector("#order").addEventListener('click', (e) =>{
-            //     let valid = true;
-            //     for (let input of document.querySelectorAll(".cart__order__form input,.cart__order__form textarea")){
-            //         valid &= input.reportValidity();
-            //         if (!valid){
-            //             break;
-            //         }
-            //     }
-            //     if (valid){
-            //         alert("Formulaire OK");
-            //     }
-            // })
-
 // ------------------- FIN VALIDATION FORMULAIRE ---------------------//
             if (firstNameControle() && lastNameControle() && villeNameControle() && adresseControle() && emailControle() && dataPannier !== null) {
                 localStorage.removeItem("Formulaire")
@@ -302,12 +288,7 @@ window.onload = function () {
                 dataPannier.forEach((x) => {
                     arrayID.push(x._id);
                 });
-                //Fait en forEach et avec boucle for
-                // let arrID = [];
-                // console.log(arrID)
-                // for (let d = 0; d < dataPannier.length; d++) {
-                //     arrID.push(dataPannier[d]._id)
-                // }
+
                 const dataAEnvoyer = {
                     'products': arrayID,
                     'contact': formulaireValue
