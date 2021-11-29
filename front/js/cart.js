@@ -45,9 +45,6 @@ window.onload = function () {
                             const getId = e.path[4].getAttribute("data-id")
                             const getColor = e.path[4].getAttribute("data-color")
                             console.log(getId + getColor)
-                            console.log(e)
-
-
 
                             if (getId === dataPannier[i]._id && getColor === dataPannier[i].color) {
                                 dataPannier.splice(i, 1)// Retire l'objet de dataPannier grace a splice
@@ -65,8 +62,8 @@ window.onload = function () {
 //Calcul du prix total dans le panier ---
                     let prixTotalPanier = [];
                     let quantityArticleTotal = [];
-                    // console.log("Varriable prixTotalPanier : ", prixTotalPanier)
-                    // console.log("Varriable quantityArticleTotal : ", quantityArticleTotal)
+                    console.log("Varriable prixTotalPanier : ", prixTotalPanier)
+                    console.log("Varriable quantityArticleTotal : ", quantityArticleTotal)
 
 //Prendre tous les prix qui se trouve dans le panier
                     for (let t = 0; t < dataPannier.length; t++) {
@@ -277,19 +274,6 @@ window.onload = function () {
                 textEmailErrorMsg.textContent = "Veuillez respecter le format e-mail exemple : johnDoe@gmail.fr";
             }
 
-            // Validation formulaire plus simple
-            // document.querySelector("#order").addEventListener('click', (e) =>{
-            //     let valid = true;
-            //     for (let input of document.querySelectorAll(".cart__order__form input,.cart__order__form textarea")){
-            //         valid &= input.reportValidity();
-            //         if (!valid){
-            //             break;
-            //         }
-            //     }
-            //     if (valid){
-            //         alert("Formulaire OK");
-            //     }
-            // })
 
 // ------------------- FIN VALIDATION FORMULAIRE ---------------------//
             if (firstNameControle() && lastNameControle() && villeNameControle() && adresseControle() && emailControle() && dataPannier !== null) {
@@ -302,12 +286,7 @@ window.onload = function () {
                 dataPannier.forEach((x) => {
                     arrayID.push(x._id);
                 });
-                //Fait en forEach et avec boucle for
-                // let arrID = [];
-                // console.log(arrID)
-                // for (let d = 0; d < dataPannier.length; d++) {
-                //     arrID.push(dataPannier[d]._id)
-                // }
+
                 const dataAEnvoyer = {
                     'products': arrayID,
                     'contact': formulaireValue
@@ -327,15 +306,13 @@ window.onload = function () {
                         response = await res.json()
                         console.log(' response :', response)
                         console.log(response.orderId)
+                        window.location.href = "http://localhost:63342/TessierSylvain_5_13102021/front/html/confirmation.html?_orderId=" + response.orderId;
                     })
                     .catch((e) => {
                         console.log(e)
                     });
 
-                setTimeout(() => {
-                    window.location.href = "http://localhost:63342/TessierSylvain_5_13102021/front/html/confirmation.html?_orderId=" + response.orderId;
                     console.log(response.orderId)
-                }, 7000)
             }
         } else {
             e.preventDefault()
